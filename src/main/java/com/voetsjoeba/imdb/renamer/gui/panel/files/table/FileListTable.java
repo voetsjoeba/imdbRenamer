@@ -202,10 +202,10 @@ public class FileListTable extends JTable implements KeyListener, DropTargetList
 		boolean isRightMouseButton = SwingUtilities.isRightMouseButton(e);
 		boolean isDoubleClick = (e.getClickCount() >= 2);
 		
-		int clickedRowIdx = rowAtPoint(e.getPoint());
+		int clickedRowIdx = rowAtPoint(e.getPoint()); // Note: can return -1 if the point is out of range!
 		int[] selectedRowIndices = getSelectedRows();
 		
-		if(selectedRowIndices.length == 0){
+		if(selectedRowIndices.length == 0 && clickedRowIdx >= 0){
 			// if there's no selection, select the one that just got right-clicked
 			getSelectionModel().setSelectionInterval(clickedRowIdx, clickedRowIdx);
 			selectedRowIndices = new int[]{clickedRowIdx};
