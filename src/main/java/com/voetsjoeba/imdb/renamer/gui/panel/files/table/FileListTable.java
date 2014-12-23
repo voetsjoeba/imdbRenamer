@@ -166,10 +166,10 @@ public class FileListTable extends JTable implements KeyListener, DropTargetList
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public synchronized void drop(DropTargetDropEvent dtde) {
-		
-		try {
-			
+	public synchronized void drop(DropTargetDropEvent dtde)
+	{
+		try
+		{
 			Transferable transferable = dtde.getTransferable();
 			if(transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)){
 				
@@ -180,9 +180,7 @@ public class FileListTable extends JTable implements KeyListener, DropTargetList
 					List<File> files = (List<File>) transferData;
 					Application.getInstance().getFilesModel().add(files);
 				}
-				
 			}
-			
 		}
 		catch(IOException ioex){
 			
@@ -190,12 +188,11 @@ public class FileListTable extends JTable implements KeyListener, DropTargetList
 		catch(UnsupportedFlavorException e) {
 			
 		}
-		
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		
+	public void mouseClicked(MouseEvent e)
+	{
 		Title selectedTitle = Application.getInstance().getTitleModel().getTitle();
 		
 		boolean isLeftMouseButton = SwingUtilities.isLeftMouseButton(e);
@@ -217,10 +214,11 @@ public class FileListTable extends JTable implements KeyListener, DropTargetList
 		Arrays.sort(selectedRowIndices);
 		boolean clickedSelectedItem = (Arrays.binarySearch(selectedRowIndices, clickedRowIdx) >= 0);
 		
-		if(selectedRowIndices.length > 0 && isRightMouseButton && clickedSelectedItem){
-			
+		if(selectedRowIndices.length > 0 && isRightMouseButton && clickedSelectedItem)
+		{
 			List<File> selectedFiles = new ArrayList<File>();
-			for(int selectedRowIdx : selectedRowIndices) selectedFiles.add(filesModel.getFile(selectedRowIdx));
+			for(int selectedRowIdx : selectedRowIndices)
+				selectedFiles.add(filesModel.getFile(selectedRowIdx));
 			
 			Action removeItemsAction = new RemoveFilesAction(selectedFiles);
 			
@@ -228,16 +226,16 @@ public class FileListTable extends JTable implements KeyListener, DropTargetList
 			popupMenu.add(removeItemsAction);
 			
 			// check if (all) the selected files can be renamed, have mappings, ...
-			if(selectedTitle instanceof Series){ // prevent nasty "can only work with series"-exceptions for this next bit
-				
+			if(selectedTitle instanceof Series) // prevent nasty "can only work with series"-exceptions for this next bit
+			{
 				boolean allRenamable = true;
 				boolean allHaveValidMappings = true;
 				
 				// TODO: hide this behind a function somewhere like isUnaffectedRenameCandidate in Application
-				
-				for(File selectedFile : selectedFiles){
-					
-					try {
+				for(File selectedFile : selectedFiles)
+				{
+					try
+					{
 						fileRenamer.getRenamedFile(selectedFile, selectedTitle);
 					}
 					catch(NoSuchEpisodeException nsex){
@@ -257,19 +255,18 @@ public class FileListTable extends JTable implements KeyListener, DropTargetList
 						allRenamable = false;
 						//break;
 					}
-					
-					
 				}
 				
 				// if all files can be renamed, add a "perform rename" action to the rightclick menu
-				if(allRenamable) popupMenu.add(new PerformRenameAction(selectedFiles));
-				if(allHaveValidMappings) popupMenu.add(new RemoveSeasonEpisodeNumberAction(selectedFiles));
-				
+				if(allRenamable)
+					popupMenu.add(new PerformRenameAction(selectedFiles));
+				if(allHaveValidMappings)
+					popupMenu.add(new RemoveSeasonEpisodeNumberAction(selectedFiles));
 			}
 			
 			// this next section may add actions specific to single selections
-			if(singleSelection){
-				
+			if(singleSelection)
+			{
 				//File selectedFile = (File) selectedValue;
 				File selectedFile = filesModel.getFile(selectedRowIndices[0]);
 				
@@ -278,37 +275,32 @@ public class FileListTable extends JTable implements KeyListener, DropTargetList
 					Action assignSeNumberAction = new AssignSeasonEpisodeNumberAction(selectedFile, (Series) selectedTitle);
 					popupMenu.add(assignSeNumberAction);
 				}
-				
 			}
 			
 			popupMenu.show(this, e.getX(), e.getY());
-			
 		}
 		
-		if(isLeftMouseButton && isDoubleClick){
-			
+		if(isLeftMouseButton && isDoubleClick)
+		{
 			// if the selected title is a series object but no mapping exists for this entry, open the mapper dialog
-			if(singleSelection){
-				
+			if(singleSelection)
+			{
 				//SeasonEpisodeMapper mapper = Application.getInstance().getRenamer().getSeasonEpisodeMapper();
 				
 				/*Object selectedValue = getSelectedValue();
 				File selectedFile = (File) selectedValue;*/
 				File selectedFile = filesModel.getFile(selectedRowIndices[0]);
 				
-				if((selectedTitle instanceof Series)){
-					
+				if((selectedTitle instanceof Series))
+				{
 					boolean hasValidMapping = Application.getInstance().hasValidMapping(selectedFile, (Series) selectedTitle);
 					
 					if(!hasValidMapping){
 						Action assignSeNumberAction = new AssignSeasonEpisodeNumberAction(selectedFile, (Series) selectedTitle);
 						assignSeNumberAction.actionPerformed(null);
 					}
-					
 				}
-				
 			}
-			
 		}
 		
 		// TODO
