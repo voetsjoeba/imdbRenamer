@@ -8,6 +8,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 
+import com.voetsjoeba.imdb.domain.LimitedTitle;
 import com.voetsjoeba.imdb.domain.api.Searchable;
 import com.voetsjoeba.imdb.renamer.Application;
 import com.voetsjoeba.imdb.renamer.gui.action.generic.ApplicationAction;
@@ -15,9 +16,9 @@ import com.voetsjoeba.imdb.renamer.gui.action.generic.ApplicationAction;
 @SuppressWarnings("serial")
 public class SearchAction extends ApplicationAction implements DocumentListener {
 	
-	protected JComboBox searchField;
+	protected JComboBox<LimitedTitle> searchField;
 	
-	public SearchAction(JComboBox searchField){
+	public SearchAction(JComboBox<LimitedTitle> searchField){
 		
 		super("Search");
 		this.searchField = searchField;

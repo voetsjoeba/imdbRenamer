@@ -27,8 +27,9 @@ import com.voetsjoeba.imdb.domain.api.Title;
  * @author Jeroen De Ridder
  */
 @SuppressWarnings("serial")
-public class TitleRegistryViewerItem extends JPanel implements ListCellRenderer {
+public class TitleRegistryViewerItem extends JPanel implements ListCellRenderer<BaseTitle> {
 	
+	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(TitleRegistryViewerItem.class);
 	private static final RenderFailureLabel renderFailureLabel = new RenderFailureLabel("Failed to render entry");
 	
@@ -143,10 +144,10 @@ public class TitleRegistryViewerItem extends JPanel implements ListCellRenderer 
 	}
 	
 	@Override
-	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	public Component getListCellRendererComponent(JList<? extends BaseTitle> list, BaseTitle baseTitle, int index, boolean isSelected, boolean cellHasFocus) {
 		
-		if(value == null || !(value instanceof BaseTitle)) return renderFailureLabel;
-		BaseTitle baseTitle = (BaseTitle) value;
+		if(baseTitle == null)
+			return renderFailureLabel;
 		
 		if(isSelected) {
 			setBackground(list.getSelectionBackground());

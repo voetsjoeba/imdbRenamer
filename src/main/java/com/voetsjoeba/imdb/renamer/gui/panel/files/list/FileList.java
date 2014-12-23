@@ -24,7 +24,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -64,7 +63,7 @@ import com.voetsjoeba.imdb.renamer.model.FilesModel;
  * @author Jeroen
  */
 @SuppressWarnings("serial")
-public class FileList extends JList implements FilenameAnalysisListener, TitleSelectionListener, RenameFormatListener, KeyListener, DropTargetListener, DragSourceListener, DragGestureListener, MouseListener {
+public class FileList extends JList<File> implements FilenameAnalysisListener, TitleSelectionListener, RenameFormatListener, KeyListener, DropTargetListener, DragSourceListener, DragGestureListener, MouseListener {
 	
 	private static final Logger log = LoggerFactory.getLogger(FileList.class);
 	
@@ -166,13 +165,7 @@ public class FileList extends JList implements FilenameAnalysisListener, TitleSe
 		// rightlick
 		if(selectedIndices.length > 0 && isRightMouseButton && clickedSelectedItem){
 			
-			Object[] selectedObjects = FileList.this.getSelectedValues();
-			List<File> selectedFiles = new ArrayList<File>(selectedObjects.length);
-			
-			for(Object objectToRemove : selectedObjects){
-				selectedFiles.add((File) objectToRemove);
-			}
-			
+			List<File> selectedFiles = FileList.this.getSelectedValuesList();
 			FileRenamer renamer = Application.getInstance().getRenamer();
 			
 			// add remove action for selected files
@@ -325,26 +318,12 @@ public class FileList extends JList implements FilenameAnalysisListener, TitleSe
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		
 		if(e.getKeyCode() == KeyEvent.VK_DELETE){
-			
-			Object[] selectedValues = getSelectedValues();
-			
-			for(Object selectedValue : selectedValues){
-				
-				if(selectedValue instanceof File){
-					
-					File selectedFile = (File) selectedValue;
-					
-					RemoveFilesAction removeFilesAction = new RemoveFilesAction(Arrays.asList(selectedFile));
-					removeFilesAction.actionPerformed(null);
-					
-				}
-				
+			for(File selectedFile : getSelectedValuesList()){
+				RemoveFilesAction removeFilesAction = new RemoveFilesAction(Arrays.asList(selectedFile));
+				removeFilesAction.actionPerformed(null);
 			}
-			
 		}
-		
 	}
 	
 	@Override public void keyReleased(KeyEvent e) {}

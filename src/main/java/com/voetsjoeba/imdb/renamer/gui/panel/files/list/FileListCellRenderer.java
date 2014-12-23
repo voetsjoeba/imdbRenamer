@@ -17,7 +17,7 @@ import com.voetsjoeba.imdb.renamer.event.FilesClearedEvent;
 import com.voetsjoeba.imdb.renamer.model.TitleModel;
 
 @SuppressWarnings("serial")
-public class FileListCellRenderer extends JPanel implements ListCellRenderer, FileListListener {
+public class FileListCellRenderer extends JPanel implements ListCellRenderer<File>, FileListListener {
 	
 	/*private JPanel entryControlsPanel;
 	private JButton removeButton;*/
@@ -31,11 +31,9 @@ public class FileListCellRenderer extends JPanel implements ListCellRenderer, Fi
 	}
 	
 	@Override
-	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	public Component getListCellRendererComponent(JList<? extends File> list, File file, int index, boolean isSelected, boolean cellHasFocus) {
 		
-		if(value == null || !(value instanceof File)) return null;
-		
-		File file = (File) value;
+		if(file == null) return null;
 		
 		FileListItem fileListItem = fileListItems.get(file); // get previously mapped component, if any
 		if(!fileListItems.containsKey(file)){

@@ -176,7 +176,7 @@ public class FileListItem extends JPanel {
 		
 	}
 	
-	public void updateState(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus){
+	public void updateState(JList<? extends File> list, File value, int index, boolean isSelected, boolean cellHasFocus){
 		
 		if(isSelected) {
 			

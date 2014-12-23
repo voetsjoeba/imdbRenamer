@@ -15,7 +15,7 @@ import com.voetsjoeba.imdb.renamer.registry.LimitedTitleRegistry;
  * @author Jeroen De Ridder
  */
 @SuppressWarnings("serial")
-public class TitleRegistryViewerListModel extends DefaultListModel implements LimitedTitleRegistryListener {
+public class TitleRegistryViewerListModel extends DefaultListModel<LimitedTitle> implements LimitedTitleRegistryListener {
 	
 	public TitleRegistryViewerListModel(){
 		

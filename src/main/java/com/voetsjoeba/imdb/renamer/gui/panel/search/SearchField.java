@@ -10,10 +10,10 @@ import com.voetsjoeba.imdb.renamer.event.RegistryTitleAddedEvent;
 import com.voetsjoeba.imdb.renamer.event.RegistryTitleRemovedEvent;
 
 @SuppressWarnings("serial")
-public class SearchField extends JComboBox implements LimitedTitleRegistryListener {
+public class SearchField extends JComboBox<LimitedTitle> implements LimitedTitleRegistryListener {
 	
 	// TODO: turn into autocompleter
-	protected DefaultComboBoxModel comboBoxModel;
+	protected DefaultComboBoxModel<LimitedTitle> comboBoxModel;
 	
 	public SearchField(){
 		init();
@@ -21,7 +21,7 @@ public class SearchField extends JComboBox implements LimitedTitleRegistryListen
 	
 	private void init(){
 		
-		comboBoxModel = new DefaultComboBoxModel();
+		comboBoxModel = new DefaultComboBoxModel<LimitedTitle>();
 		for(LimitedTitle cachedTitle : Application.getInstance().getTitleRegistry().getTitles()){
 			comboBoxModel.addElement(cachedTitle);
 		}

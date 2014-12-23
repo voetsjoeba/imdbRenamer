@@ -51,7 +51,7 @@ public class SearchResultsPanel extends JPanel implements SearchResultsListener 
 	private static final Logger log = LoggerFactory.getLogger(SearchResultsPanel.class);
 	
 	private JScrollPane resultsListScrollPane;
-	private JList resultsList;
+	private JList<LimitedTitle> resultsList;
 	private JPanel resultsListButtonsPanel;
 	private JButton loadButton;
 	
@@ -84,7 +84,7 @@ public class SearchResultsPanel extends JPanel implements SearchResultsListener 
 		
 		resultsListModel = new SearchResultsListModel();
 		
-		resultsList = new JList(resultsListModel);
+		resultsList = new JList<LimitedTitle>(resultsListModel);
 		resultsListScrollPane = new JScrollPane();
 		resultsListScrollPane.setPreferredSize(new Dimension(2, 150));
 		resultsListScrollPane.setMinimumSize(new Dimension(23, 150));
@@ -185,7 +185,7 @@ public class SearchResultsPanel extends JPanel implements SearchResultsListener 
 	 */
 	public void loadSelectedResult(){
 		
-		Object selectedValue = resultsList.getSelectedValue();
+		LimitedTitle selectedValue = resultsList.getSelectedValue();
 		if(selectedValue == null) return;
 		
 		final BaseTitle selectedTitle = (BaseTitle) selectedValue;

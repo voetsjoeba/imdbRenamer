@@ -145,7 +145,7 @@ public class StandardFilenameAnalyzer extends AbstractFilenameAnalyzer implement
 		
 		Matcher yearMatcher = yearPattern.matcher(releaseTitle);
 		MatchResult yearMatchResult = null;
-		String beforeYearSubstring = null; // anything that comes before the year (if found) -- likely to be a movie title
+		//String beforeYearSubstring = null; // anything that comes before the year (if found) -- likely to be a movie title
 		
 		if(yearMatcher.find()){
 			
@@ -154,8 +154,7 @@ public class StandardFilenameAnalyzer extends AbstractFilenameAnalyzer implement
 			
 			extractedInfo.setYear(year);
 			releaseTitle = removeMatchResult(releaseTitle, yearMatchResult);
-			beforeYearSubstring = releaseTitle.substring(0, yearMatchResult.start());
-			
+			//beforeYearSubstring = releaseTitle.substring(0, yearMatchResult.start());
 		}
 		
 		// -------------------------------------------------------------------------------------------------

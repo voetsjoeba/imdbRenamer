@@ -4,7 +4,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,7 +14,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
 import com.voetsjoeba.imdb.domain.LimitedTitle;
-import com.voetsjoeba.imdb.domain.api.Title;
 import com.voetsjoeba.imdb.renamer.gui.action.LimitedTitleRegistryRemoveAction;
 
 /**
@@ -24,7 +22,7 @@ import com.voetsjoeba.imdb.renamer.gui.action.LimitedTitleRegistryRemoveAction;
  * @author Jeroen De Ridder
  */
 @SuppressWarnings("serial")
-public class TitleRegistryViewerList extends JList implements MouseListener, KeyListener {
+public class TitleRegistryViewerList extends JList<LimitedTitle> implements MouseListener, KeyListener {
 	
 	protected TitleRegistryViewerListModel listModel;
 	protected TitleRegistryViewerItem listCellRenderer;
@@ -59,13 +57,7 @@ public class TitleRegistryViewerList extends JList implements MouseListener, Key
 		
 		if(selectedIndices.length > 0 && isRightMouseButton && clickedSelectedItem){
 			
-			Object[] objectsToRemove = TitleRegistryViewerList.this.getSelectedValues();
-			List<LimitedTitle> titlesToRemove = new ArrayList<LimitedTitle>(objectsToRemove.length);
-			
-			for(Object objectToRemove : objectsToRemove){
-				titlesToRemove.add((LimitedTitle) objectToRemove);
-			}
-			
+			List<LimitedTitle> titlesToRemove = TitleRegistryViewerList.this.getSelectedValuesList();
 			Action removeItemsAction = new LimitedTitleRegistryRemoveAction(titlesToRemove);
 			
 			JPopupMenu popupMenu = new JPopupMenu();
@@ -85,21 +77,10 @@ public class TitleRegistryViewerList extends JList implements MouseListener, Key
 	public void keyPressed(KeyEvent e) {
 		
 		if(e.getKeyCode() == KeyEvent.VK_DELETE){
-			
-			Object[] selectedValues = getSelectedValues();
-			for(Object selectedValue : selectedValues){
-				
-				if(selectedValue instanceof Title){
-					
-					LimitedTitle selectedTitle = (LimitedTitle) selectedValue;
-					
-					LimitedTitleRegistryRemoveAction removeFilesAction = new LimitedTitleRegistryRemoveAction(Arrays.asList(selectedTitle));
-					removeFilesAction.actionPerformed(null);
-					
-				}
-				
+			for(LimitedTitle selectedTitle : getSelectedValuesList()){
+				LimitedTitleRegistryRemoveAction removeFilesAction = new LimitedTitleRegistryRemoveAction(Arrays.asList(selectedTitle));
+				removeFilesAction.actionPerformed(null);
 			}
-			
 		}
 		
 	}
